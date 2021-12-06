@@ -36,7 +36,7 @@ class Board {
 
   checkBoard(val) {
     this.markCell(val);
-    return this.didIWin(val);
+    return this.didIWin();
   }
 
   didIWin() {
