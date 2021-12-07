@@ -15,7 +15,7 @@ class Cell {
 class Board {
   constructor(boardString) {
     this.boardString = boardString;
-    this.board = boardString.split(/\n/).map((row, i) => row.split(/[ ]{1,2}/).map((val, idx) => {
+    this.board = boardString.split(/\n/).map((row, i) => row.trim().split(/[ ]{1,2}/).map((val, idx) => {
       return new Cell(Number(val), i, idx);
     }));
   }
@@ -67,19 +67,21 @@ setupBoards.forEach((board) => {
   let won = false;
 
   
-  while (cursor < 21) {
+  while (!won) {
     won = board.checkBoard(numberedInstructions[cursor]);
     if (won) { wonBoards.push({ board, winningNumber: numberedInstructions[cursor], idx: cursor })}
     cursor++;
   }
 });
 
-console.log(setupBoards[11].findUnmarked().map((cell) => cell.value));
+console.log(
+  wonBoards
+    .sort((a, b) => b.idx - a.idx)[0]
+    .board.findUnmarked()
+    .map((cell) => cell.value)
+    .reduce((a, b) => a + b, 0) * wonBoards.sort((a, b) => b.idx - a.idx)[0]
+.winningNumber);
 
-const winningBoard = wonBoards.find((board) => board.idx === 20);
-const sumUnmarked = winningBoard.board.findUnmarked().map((cell) => cell.value).reduce((acc, curr) => acc + curr, 0);
-
-console.log(winningBoard.board.findUnmarked().map((cell) => cell.value).reduce((a, c) => a + c) * 99);
 
 
   
